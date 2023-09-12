@@ -24,7 +24,7 @@
       "@repositories/*": ["src/repositories/*"],
       "@services/*": ["src/services/*"],
       "@dtos/*": ["src/dtos/*"],
-      "@shared/*": ["src/shared/*"]
+      "@utils/*": ["src/utils/*"]
     }
   }
 }
