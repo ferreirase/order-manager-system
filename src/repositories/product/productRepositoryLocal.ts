@@ -1,10 +1,12 @@
+import { Injectable } from '@nestjs/common';
 import Product from '@models/product';
 import IProductRepository from './productInterface';
 
+@Injectable()
 export default class ProductRepositoryLocal implements IProductRepository {
   products: Array<Product> = [
     {
-      id: 'fb41e157-8bf4-4fe2-9d4c-ce5d89f44847',
+      id: '5a058ad0-6411-4857-a42c-49363b836352',
       title: 'Produto 1',
       sale_price: 19.99,
       rental_price: {

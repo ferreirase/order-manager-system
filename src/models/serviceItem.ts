@@ -1,6 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export default class ServiceItem {
+export interface IServiceItem {
+  id: string;
+  title: string;
+  price: number;
+  hours: number;
+}
+
+export default class ServiceItem implements IServiceItem {
   id: string;
   title: string;
   price: number;

@@ -1,6 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export default class Product {
+export interface IProduct {
+  id: string;
+  title: string;
+  sale_price: number;
+  rental_price: {
+    by_day: number;
+    by_hour: number;
+  };
+}
+
+export default class Product implements IProduct {
   id: string;
   title: string;
   sale_price: number;
