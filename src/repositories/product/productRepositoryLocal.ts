@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import Product from '@models/product';
+import { IProduct } from '@models/product';
 import IProductRepository from './productInterface';
 
 @Injectable()
 export default class ProductRepositoryLocal implements IProductRepository {
-  products: Array<Product> = [
+  products: Array<IProduct> = [
     {
       id: '5a058ad0-6411-4857-a42c-49363b836352',
       title: 'Produto 1',
@@ -34,11 +34,11 @@ export default class ProductRepositoryLocal implements IProductRepository {
     },
   ];
 
-  findById(productId: string): Product | undefined {
-    return this.products.find((product: Product) => product.id === productId);
+  findById(productId: string): IProduct | undefined {
+    return this.products.find((product: IProduct) => product.id === productId);
   }
 
-  find(): Product[] {
+  find(): IProduct[] {
     return this.products;
   }
 }

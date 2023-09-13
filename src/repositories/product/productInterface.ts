@@ -1,6 +1,6 @@
-import Product from '@models/product';
+import { IProduct } from '@models/product';
 
 export default interface IProductRepository {
-  find(): Product[];
-  findById(productId: string): Product | undefined;
+  find(): IProduct[];
+  findById(productId: string): IProduct | undefined;
 }

@@ -3,7 +3,14 @@ import Product from '@models/product';
 import ServiceItem from '@models/serviceItem';
 import Rental from '@models/rental';
 
-export default class Order {
+export interface IOrder {
+  id: string;
+  products?: Array<{ item: Product; quantity: number }> | [];
+  rentals?: Array<Rental> | [];
+  services?: Array<{ item: ServiceItem; quantity: number }> | [];
+}
+
+export default class Order implements IOrder {
   id: string;
   products?: Array<{ item: Product; quantity: number }> | [];
   rentals?: Array<Rental> | [];

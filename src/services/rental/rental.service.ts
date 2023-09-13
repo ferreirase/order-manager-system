@@ -1,17 +1,17 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import RentalRepository from '@repositories/rental/rentalRepositoryLocal';
-import Rental from '@models/rental';
+import { IRental } from '@models/rental';
 import { DifferenceInHours } from '@utils/dateDifferenceCalculator';
 
 @Injectable()
 export default class RentalService {
   constructor(private readonly rentalRepository: RentalRepository) {}
 
-  find(): Rental[] | [] {
+  find(): IRental[] | [] {
     return this.rentalRepository.find();
   }
 
-  findById(rentalId: string): Rental | HttpException {
+  findById(rentalId: string): IRental | HttpException {
     const rentalFound = this.rentalRepository.findById(rentalId);
 
     if (!rentalFound) throw new HttpException('Rental not found!', 404);

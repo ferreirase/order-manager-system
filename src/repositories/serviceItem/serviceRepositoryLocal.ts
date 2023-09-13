@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import ServiceItem from '@models/serviceItem';
+import { IServiceItem } from '@models/serviceItem';
 import IServiceItemRepository from './serviceItemInterface';
 
 @Injectable()
 export default class ServiceItemRepositoryLocal
   implements IServiceItemRepository
 {
-  serviceItems: Array<ServiceItem> = [];
+  serviceItems: Array<IServiceItem> = [];
 
-  findById(serviceItemId: string): ServiceItem | undefined {
+  findById(serviceItemId: string): IServiceItem | undefined {
     return this.serviceItems.find(
-      (serviceItem: ServiceItem) => serviceItem.id === serviceItemId,
+      (serviceItem: IServiceItem) => serviceItem.id === serviceItemId,
     );
   }
 
-  find(): ServiceItem[] {
+  find(): IServiceItem[] {
     return this.serviceItems;
   }
 }

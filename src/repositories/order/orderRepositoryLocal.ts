@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import Order from '@models/order';
+import { IOrder } from '@models/order';
 import IOrderRepository from './orderInterface';
 import ProductRepositoryLocal from '@repositories/product/productRepositoryLocal';
 import RentalRepositoryLocal from '@repositories/rental/rentalRepositoryLocal';
@@ -17,7 +17,7 @@ export default class OrderRepositoryLocal implements IOrderRepository {
   rentals = this.rentalRepositoryLocal.find();
   serviceItems = this.serviceItemRepositoryLocal.find();
 
-  orders: Array<Order> = [
+  orders: Array<IOrder> = [
     {
       id: '0a7fd7b4-fb24-4a6f-8438-de17112ba2e5',
       products: [
@@ -33,11 +33,11 @@ export default class OrderRepositoryLocal implements IOrderRepository {
     },
   ];
 
-  findById(orderId: string): Order | undefined {
-    return this.orders.find((order: Order) => order.id === orderId);
+  findById(orderId: string): IOrder | undefined {
+    return this.orders.find((order: IOrder) => order.id === orderId);
   }
 
-  find(): Order[] {
+  find(): IOrder[] {
     return this.orders;
   }
 }

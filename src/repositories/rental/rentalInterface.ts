@@ -1,6 +1,6 @@
-import Rental from '@models/rental';
+import { IRental } from '@models/rental';
 
 export default interface IRentalRepository {
-  find(): Rental[];
-  findById(rentalId: string): Rental | undefined;
+  find(): IRental[];
+  findById(rentalId: string): IRental | undefined;
 }

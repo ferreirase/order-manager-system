@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import Rental from '@models/rental';
+import { IRental } from '@models/rental';
 import IRentalRepository from './rentalInterface';
 
 @Injectable()
 export default class RentalRepositoryLocal implements IRentalRepository {
-  rentals: Array<Rental> = [
+  rentals: Array<IRental> = [
     {
       id: '453aa330-3ff0-4b16-9b81-5172a57b7ddf',
       period: {
@@ -23,11 +23,11 @@ export default class RentalRepositoryLocal implements IRentalRepository {
     },
   ];
 
-  findById(rentalId: string): Rental | undefined {
-    return this.rentals.find((rental: Rental) => rental.id === rentalId);
+  findById(rentalId: string): IRental | undefined {
+    return this.rentals.find((rental: IRental) => rental.id === rentalId);
   }
 
-  find(): Rental[] {
+  find(): IRental[] {
     return this.rentals;
   }
 }

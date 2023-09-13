@@ -1,6 +1,6 @@
-import Order from '@models/order';
+import { IOrder } from '@models/order';
 
 export default interface IOrderRepository {
-  find(): Order[];
-  findById(orderId: string): Order | undefined;
+  find(): IOrder[];
+  findById(orderId: string): IOrder | undefined;
 }

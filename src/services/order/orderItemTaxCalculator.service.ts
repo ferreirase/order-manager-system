@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import Order from '@models/order';
-import Product from '@models/product';
-import Rental from '@models/rental';
-import ServiceItem from '@models/serviceItem';
+import { IOrder } from '@models/order';
+import { IProduct } from '@models/product';
+import { IRental } from '@models/rental';
+import { IServiceItem } from '@models/serviceItem';
 import RentalService from '@services/rental/rental.service';
 import customToFixed from '@utils/customToFixedNumber';
 
@@ -28,17 +28,36 @@ class RentalTax implements TaxStrategy {
   }
 }
 
+export interface IOrderItemTaxCalculatorServiceReturn {
+  products: Array<{
+    total: number;
+    item: IProduct;
+    quantity: number;
+  }>;
+  services: Array<{
+    total: number;
+    item: IServiceItem;
+    quantity: number;
+  }>;
+  rentals: Array<
+    | IRental
+    | (IRental & {
+        total: number;
+      })
+  >;
+}
+
 @Injectable()
 export default class OrderItemTaxCalculatorService {
   constructor(private readonly rentalService: RentalService) {}
 
-  calculate(order: Order) {
+  calculate(order: IOrder): IOrderItemTaxCalculatorServiceReturn {
     return {
       ...order,
       products:
         order.products &&
         order.products.length &&
-        order.products.map((product: { item: Product; quantity: number }) => {
+        order.products.map((product: { item: IProduct; quantity: number }) => {
           const productTaxStrategy = new ProductTax();
 
           return {
@@ -52,7 +71,7 @@ export default class OrderItemTaxCalculatorService {
         order.services &&
         order.services.length &&
         order.services.map(
-          (service: { item: ServiceItem; quantity: number }) => {
+          (service: { item: IServiceItem; quantity: number }) => {
             const serviceTaxStrategy = new ServiceTax();
 
             return {
@@ -66,7 +85,7 @@ export default class OrderItemTaxCalculatorService {
       rentals:
         order.rentals &&
         order.rentals.length &&
-        order.rentals.map((rental: Rental) => {
+        order.rentals.map((rental: IRental) => {
           const rentalTaxStrategy = new RentalTax();
 
           const rentalTotalPrice = this.rentalService.calculateTotalRentalPrice(

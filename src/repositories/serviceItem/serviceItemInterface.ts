@@ -1,6 +1,6 @@
-import ServiceItem from '@models/serviceItem';
+import { IServiceItem } from '@models/serviceItem';
 
 export default interface IServiceItemRepository {
-  find(): ServiceItem[];
-  findById(serviceItemId: string): ServiceItem | undefined;
+  find(): IServiceItem[];
+  findById(serviceItemId: string): IServiceItem | undefined;
 }

@@ -1,22 +1,26 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import OrderRepository from '@repositories/order/orderRepositoryLocal';
-import Order from '@models/order';
-import OrderItemTaxCalculatorService from './orderItemTaxCalculator.service';
+import OrderItemTaxCalculatorService, {
+  IOrderItemTaxCalculatorServiceReturn,
+} from './orderItemTaxCalculator.service';
+import OrderAmountCalculatorService from './orderAmountCalculator.service';
+import { IOrder } from '@models/order';
+
+interface IOrderServiceReturn extends IOrderItemTaxCalculatorServiceReturn {}
 
 @Injectable()
 export default class OrderService {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly orderItemTaxCalculatorService: OrderItemTaxCalculatorService,
+    private readonly orderAmountCalculatorService: OrderAmountCalculatorService,
   ) {}
 
-  find(): Order[] | [] {
-    return this.orderRepository
-      .find()
-      .map((order) => this.orderItemTaxCalculatorService.calculate(order));
+  find(): IOrder[] | [] {
+    return this.orderRepository.find();
   }
 
-  findById(orderId: string): Order | HttpException {
+  findById(orderId: string): IOrderServiceReturn | HttpException {
     const orderFound = this.orderRepository.findById(orderId);
 
     if (!orderFound) throw new HttpException('Order not found!', 404);
