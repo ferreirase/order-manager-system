@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import RentalRepository from '@repositories/rental/rentalInterface';
+import RentalRepository from '@repositories/rental/rentalRepositoryLocal';
 import { IRental } from '@models/rental';
 import { DifferenceInHours } from '@utils/dateDifferenceCalculator';
 

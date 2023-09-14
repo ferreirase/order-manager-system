@@ -1,9 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import OrderRepository from '@repositories/order/orderInterface';
+import OrderRepository from '@repositories/order/orderRepositoryLocal';
 import OrderItemTaxCalculatorService, {
   IOrderItemTaxCalculatorServiceReturn,
 } from './orderItemTaxCalculator.service';
-import OrderAmountCalculatorService from './orderAmountCalculator.service';
 import { IOrder } from '@models/order';
 
 interface IOrderServiceReturn extends IOrderItemTaxCalculatorServiceReturn {}
@@ -13,7 +12,6 @@ export default class OrderService {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly orderItemTaxCalculatorService: OrderItemTaxCalculatorService,
-    private readonly orderAmountCalculatorService: OrderAmountCalculatorService,
   ) {}
 
   find(): IOrder[] | [] {

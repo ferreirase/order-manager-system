@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import ServiceItemtRepository from '@repositories/serviceItem/serviceItemInterface';
+import ServiceItemtRepository from '@repositories/serviceItem/serviceRepositoryLocal';
 import { IServiceItem } from '@models/serviceItem';
 
 @Injectable()

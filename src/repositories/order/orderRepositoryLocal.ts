@@ -7,15 +7,11 @@ import ServiceItemRepositoryLocal from '@repositories/serviceItem/serviceReposit
 
 @Injectable()
 export default class OrderRepositoryLocal implements IOrderRepository {
-  constructor(
-    private readonly productRepositoryLocal: ProductRepositoryLocal,
-    private readonly rentalRepositoryLocal: RentalRepositoryLocal,
-    private readonly serviceItemRepositoryLocal: ServiceItemRepositoryLocal,
-  ) {}
+  constructor() {}
 
-  products = this.productRepositoryLocal.find();
-  rentals = this.rentalRepositoryLocal.find();
-  serviceItems = this.serviceItemRepositoryLocal.find();
+  products = new ProductRepositoryLocal().find();
+  rentals = new RentalRepositoryLocal().find();
+  serviceItems = new ServiceItemRepositoryLocal().find();
 
   orders: Array<IOrder> = [
     {

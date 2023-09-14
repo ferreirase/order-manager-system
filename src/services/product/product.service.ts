@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import ProductRepository from '@repositories/product/productInterface';
+import ProductRepository from '@repositories/product/productRepositoryLocal';
 import { IProduct } from '@models/product';
 
 @Injectable()
