@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import OrderRepository from '@repositories/order/orderRepositoryLocal';
+import OrderRepository from '@repositories/order/orderInterface';
 import OrderItemTaxCalculatorService, {
   IOrderItemTaxCalculatorServiceReturn,
 } from './orderItemTaxCalculator.service';
