@@ -8,8 +8,10 @@ import OrderItemTaxCalculatorService, {
 } from './orderItemTaxCalculator.service';
 import { IOrder } from '@models/order';
 import AddItemDto from '@dtos/order/addItemDto';
+import CreateOrderDto from '@dtos/order/createOrderDto';
 
-interface IOrderServiceReturn extends IOrderItemTaxCalculatorServiceReturn {}
+export interface IOrderServiceReturn
+  extends IOrderItemTaxCalculatorServiceReturn {}
 
 @Injectable()
 export default class OrderService {
@@ -65,8 +67,10 @@ export default class OrderService {
     return this.orderRepository.update(order);
   }
 
-  find(): IOrder[] | [] {
-    return this.orderRepository.find();
+  find(): IOrderServiceReturn[] | [] {
+    return this.orderRepository
+      .find()
+      .map((order) => this.orderItemTaxCalculatorService.calculate(order));
   }
 
   addItem(payload: AddItemDto): IOrder {
@@ -100,5 +104,35 @@ export default class OrderService {
     if (!orderFound) throw new HttpException('Order not found!', 404);
 
     return this.orderItemTaxCalculatorService.calculate(orderFound);
+  }
+
+  create(payload: CreateOrderDto): IOrder {
+    const newOrder = this.orderRepository.create();
+
+    payload.products &&
+      payload.products.length &&
+      this.addItem({
+        orderId: newOrder.id,
+        type: 'product',
+        items: payload.products,
+      });
+
+    payload.services &&
+      payload.services.length &&
+      this.addItem({
+        orderId: newOrder.id,
+        type: 'service',
+        items: payload.services,
+      });
+
+    payload.rentals &&
+      payload.rentals.length &&
+      this.addItem({
+        orderId: newOrder.id,
+        type: 'rental',
+        items: payload.rentals,
+      });
+
+    return newOrder;
   }
 }

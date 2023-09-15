@@ -10,6 +10,7 @@ import OrderService from '@services/order/order.service';
 import { IOrderItemTaxCalculatorServiceReturn } from '@services/order/orderItemTaxCalculator.service';
 import { IOrder } from '@models/order';
 import AddItemDto from '@dtos/order/addItemDto';
+import CreateOrderDto from '@dtos/order/createOrderDto';
 
 interface IControllerOrdersReturn
   extends IOrderItemTaxCalculatorServiceReturn {}
@@ -19,7 +20,7 @@ export default class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('/')
-  find(): { orders: IOrder[] } {
+  find(): { orders: IOrderItemTaxCalculatorServiceReturn[] } {
     return { orders: this.orderService.find() };
   }
 
@@ -27,8 +28,6 @@ export default class OrderController {
   findById(@Param('orderId') orderId: string): {
     order: IControllerOrdersReturn | HttpException;
   } {
-    // console.log(this.orderService.find()[0].items[0].constructor.name);
-
     return { order: this.orderService.findById(orderId) };
   }
 
@@ -38,5 +37,10 @@ export default class OrderController {
     @Body() body: AddItemDto,
   ): { order: IOrder } {
     return { order: this.orderService.addItem({ ...body, orderId }) };
+  }
+
+  @Post('/')
+  create(@Body() body: CreateOrderDto): { order: IOrder } {
+    return { order: this.orderService.create(body) };
   }
 }

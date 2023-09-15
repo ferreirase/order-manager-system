@@ -1,10 +1,10 @@
+import { v4 as uudiv4 } from 'uuid';
 import { Injectable } from '@nestjs/common';
-import { IOrder } from '@models/order';
+import Order, { IOrder } from '@models/order';
 import IOrderRepository from './orderInterface';
 import ProductRepositoryLocal from '@repositories/product/productRepositoryLocal';
 import RentalRepositoryLocal from '@repositories/rental/rentalRepositoryLocal';
 import ServiceItemRepositoryLocal from '@repositories/serviceItem/serviceRepositoryLocal';
-import {} from '@models/product';
 
 @Injectable()
 export default class OrderRepositoryLocal implements IOrderRepository {
@@ -29,8 +29,17 @@ export default class OrderRepositoryLocal implements IOrderRepository {
     },
   ];
 
-  create(order: IOrder): IOrder {
-    return order;
+  create(): IOrder {
+    const newOrder = new Order({
+      id: uudiv4(),
+      products: [],
+      services: [],
+      rentals: [],
+    });
+
+    this.orders.push(newOrder);
+
+    return newOrder;
   }
 
   findById(orderId: string): IOrder | undefined {
