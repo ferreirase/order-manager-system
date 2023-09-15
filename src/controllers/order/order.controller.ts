@@ -20,7 +20,7 @@ export default class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('/')
-  find(): { orders: IOrderItemTaxCalculatorServiceReturn[] } {
+  find(): { orders: IControllerOrdersReturn[] } {
     return { orders: this.orderService.find() };
   }
 

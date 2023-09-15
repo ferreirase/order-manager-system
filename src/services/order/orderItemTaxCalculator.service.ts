@@ -38,12 +38,10 @@ export interface IOrderItemTaxCalculatorServiceReturn {
     total: number;
     item: IServiceItem;
   }>;
-  rentals: Array<
-    | IRental
-    | (IRental & {
-        total: number;
-      })
-  >;
+  rentals: Array<{
+    total: number;
+    item: IRental;
+  }>;
 }
 
 @Injectable()

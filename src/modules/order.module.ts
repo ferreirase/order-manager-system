@@ -6,6 +6,7 @@ import ProductModule from './product.module';
 import RentalModule from './rental.module';
 import ServiceItemModule from './serviceItem.module';
 import OrderRepositoryLocal from '@repositories/order/orderRepositoryLocal';
+import OrderAmountCalculatorService from '@services/order/orderAmountCalculator.service';
 
 @Module({
   imports: [ProductModule, RentalModule, ServiceItemModule],
@@ -13,6 +14,7 @@ import OrderRepositoryLocal from '@repositories/order/orderRepositoryLocal';
   providers: [
     OrderService,
     OrderItemTaxCalculatorService,
+    OrderAmountCalculatorService,
     OrderRepositoryLocal,
   ],
   exports: [OrderService],

@@ -9,6 +9,7 @@ import OrderItemTaxCalculatorService, {
 import { IOrder } from '@models/order';
 import AddItemDto from '@dtos/order/addItemDto';
 import CreateOrderDto from '@dtos/order/createOrderDto';
+import OrderAmountCalculatorService from './orderAmountCalculator.service';
 
 export interface IOrderServiceReturn
   extends IOrderItemTaxCalculatorServiceReturn {}
@@ -19,6 +20,7 @@ export default class OrderService {
     private readonly orderRepository: OrderRepository,
     private readonly productService: ProductService,
     private readonly serviceItemService: ServiceItemService,
+    private readonly orderAmountCalculatorService: OrderAmountCalculatorService,
     private readonly rentalService: RentalService,
     private readonly orderItemTaxCalculatorService: OrderItemTaxCalculatorService,
   ) {}
@@ -67,10 +69,18 @@ export default class OrderService {
     return this.orderRepository.update(order);
   }
 
-  find(): IOrderServiceReturn[] | [] {
-    return this.orderRepository
-      .find()
-      .map((order) => this.orderItemTaxCalculatorService.calculate(order));
+  find(): Array<IOrderServiceReturn & { amount: number }> | [] {
+    return this.orderRepository.find().map((order) => {
+      const orderWithItemsCalculated =
+        this.orderItemTaxCalculatorService.calculate(order);
+
+      return {
+        ...orderWithItemsCalculated,
+        amount: this.orderAmountCalculatorService.calculate(
+          orderWithItemsCalculated,
+        ),
+      };
+    });
   }
 
   addItem(payload: AddItemDto): IOrder {
@@ -98,12 +108,22 @@ export default class OrderService {
     }
   }
 
-  findById(orderId: string): IOrderServiceReturn | HttpException {
+  findById(
+    orderId: string,
+  ): (IOrderServiceReturn & { amount: number }) | HttpException {
     const orderFound = this.orderRepository.findById(orderId);
 
     if (!orderFound) throw new HttpException('Order not found!', 404);
 
-    return this.orderItemTaxCalculatorService.calculate(orderFound);
+    const orderWithItemsCalculated =
+      this.orderItemTaxCalculatorService.calculate(orderFound);
+
+    return {
+      ...orderWithItemsCalculated,
+      amount: this.orderAmountCalculatorService.calculate(
+        orderWithItemsCalculated,
+      ),
+    };
   }
 
   create(payload: CreateOrderDto): IOrder {
