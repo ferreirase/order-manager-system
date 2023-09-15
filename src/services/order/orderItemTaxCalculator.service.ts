@@ -37,7 +37,6 @@ export interface IOrderItemTaxCalculatorServiceReturn {
   services: Array<{
     total: number;
     item: IServiceItem;
-    quantity: number;
   }>;
   rentals: Array<
     | IRental
@@ -55,52 +54,56 @@ export default class OrderItemTaxCalculatorService {
     return {
       ...order,
       products:
-        order.products &&
-        order.products.length &&
-        order.products.map((product: { item: IProduct; quantity: number }) => {
-          const productTaxStrategy = new ProductTax();
+        order.products && order.products.length
+          ? order.products.map(
+              (product: { item: IProduct; quantity: number }) => {
+                const productTaxStrategy = new ProductTax();
 
-          return {
-            ...product,
-            total: productTaxStrategy.calculateTax(
-              product.item.sale_price * product.quantity,
-            ),
-          };
-        }),
+                return {
+                  ...product,
+                  total: productTaxStrategy.calculateTax(
+                    product.item.sale_price * product.quantity,
+                  ),
+                };
+              },
+            )
+          : [],
       services:
-        order.services &&
-        order.services.length &&
-        order.services.map(
-          (service: { item: IServiceItem; quantity: number }) => {
-            const serviceTaxStrategy = new ServiceTax();
+        order.services && order.services.length
+          ? order.services.map(
+              (service: { item: IServiceItem; quantity: number }) => {
+                const serviceTaxStrategy = new ServiceTax();
 
-            return {
-              ...service,
-              total: serviceTaxStrategy.calculateTax(
-                service.item.price * service.item.hours * service.quantity,
-              ),
-            };
-          },
-        ),
+                return {
+                  ...service,
+                  total: serviceTaxStrategy.calculateTax(
+                    service.item.price * service.item.hours,
+                  ),
+                };
+              },
+            )
+          : [],
       rentals:
-        order.rentals &&
-        order.rentals.length &&
-        order.rentals.map((rental: IRental) => {
-          const rentalTaxStrategy = new RentalTax();
+        order.rentals && order.rentals.length
+          ? order.rentals.map((rental) => {
+              const rentalTaxStrategy = new RentalTax();
 
-          const rentalTotalPrice = this.rentalService.calculateTotalRentalPrice(
-            rental.id,
-          );
+              const rentalTotalPrice =
+                this.rentalService.calculateTotalRentalPrice(rental.item.id);
 
-          if (typeof rentalTotalPrice === 'number') {
-            return {
-              ...rental,
-              total: rentalTaxStrategy.calculateTax(rentalTotalPrice),
-            };
-          }
+              if (typeof rentalTotalPrice === 'number') {
+                return {
+                  ...rental.item,
+                  total: rentalTaxStrategy.calculateTax(rentalTotalPrice),
+                };
+              }
 
-          return rental;
-        }),
+              return {
+                ...rental.item,
+                total: 0,
+              };
+            })
+          : [],
     };
   }
 }
